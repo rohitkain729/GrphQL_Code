@@ -1,22 +1,44 @@
+import mongo from "mongodb";
+import getDB from "./utils/DBconnection.js";
+
 export const resolvers = {
   Query: {
-    getName: () => {
-      return "rohit";
+    loginAdmin: async (parent, args, context, info) => {
+      try {
+        const db = await getDB();
+        const collection = db.collection("admin");
+        const users = await collection.findOne(args?.data);
+        console.log(users);
+        return users;
+      } catch (err) {
+        console.log(err);
+      }
     },
-    getPlayers:()=>{
-      return ["kholi","rahul","abhishek","rohit"];
+
+     getVendors: async (parent, args, context, info) => {
+      try {
+        const db = await getDB();
+        const collection = db.collection("vendors");
+        const vendorsData = await collection.find().toArray();
+        return vendorsData;
+      } catch (err) {
+        console.log(err.message);
+        return err.message;
+      }
     },
-    getStd:()=>{
-      return [{rno:1,name:"s1",add:"gwl"},
-        {rno:2,name:"s2",add:"Hyd"},
-        {rno:3,name:"s3",add:"Banglore"},
-        {rno:4,name:"s4",add:"Bhopal"}
-      ]
-    }
+   
   },
+
   Mutation: {
-    saveUser: () => {
-      return "Success  Saving";
+    registerVendor: async (parent, args, context, info) => {
+      try {
+        const db = await getDB();
+        const vendor = db.collection("vendors");
+        const result = await vendor.insertOne(args?.data);
+        return result;
+      } catch (err) {
+        console.log(err.message);
+      }
     },
   },
 };

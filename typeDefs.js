@@ -1,21 +1,28 @@
 
 export const  typeDefs = `
 
-type Student{
-rno:Int
-name:String
-add:String
+scalar  JSON
+
+input  User{
+uid:String
+password:String
+role:String
 }
 
+type Vendor{
+uid:String
+password:String
+role:String
+}
 
 type Query{
-   getName:String
-   getPlayers:[String]
-   getStd:[Student]
+  loginAdmin(data:User):JSON
+  getVendors:[Vendor]
 }
 
 type Mutation{
-  saveUser:String
+registerVendor(data:User):JSON
+
 }
 
 `
